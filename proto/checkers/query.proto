@@ -13,11 +13,11 @@ option go_package = "github.com/christianvari/checkers/x/checkers/types";
 
 // Query defines the gRPC querier service.
 service Query {
-  // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/christianvari/checkers/checkers/params";
-  }
-  // Queries a NextGame by index.
+// Parameters queries the parameters of the module.
+	rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+		option (google.api.http).get = "/christianvari/checkers/checkers/params";
+	}
+	// Queries a NextGame by index.
 	rpc NextGame(QueryGetNextGameRequest) returns (QueryGetNextGameResponse) {
 		option (google.api.http).get = "/christianvari/checkers/checkers/next_game";
 	}
