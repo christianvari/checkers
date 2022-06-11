@@ -2,7 +2,9 @@ package keeper
 
 import (
 	"context"
+	"strconv"
 
+	"github.com/christianvari/checkers/x/checkers/rules"
 	"github.com/christianvari/checkers/x/checkers/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
@@ -10,8 +12,28 @@ import (
 func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (*types.MsgCreateGameResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	nextGame, found := k.Keeper.GetNextGame(ctx)
+	if !found {
+		panic("NextGame not found")
+	}
 
-	return &types.MsgCreateGameResponse{}, nil
+	newIndex := strconv.FormatUint(nextGame.IdValue, 10)
+
+	newGame := rules.New()
+
+	storedGame := types.StoredGame{
+		Creator: msg.Creator,
+		Index:   newIndex,
+		Game:    newGame.String(),
+		Turn:    rules.PieceStrings[newGame.Turn],
+		Red:     msg.Red,
+		Black:   msg.Black,
+	}
+
+	k.Keeper.SetStoredGame(ctx, storedGame)
+
+	nextGame.IdValue++
+	k.Keeper.SetNextGame(ctx, nextGame)
+
+	return &types.MsgCreateGameResponse{IdValue: newIndex}, nil
 }
