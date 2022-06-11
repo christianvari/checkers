@@ -91,6 +91,8 @@ paths:
                 items:
                   type: object
                   properties:
+                    creator:
+                      type: string
                     index:
                       type: string
                     game:
@@ -218,6 +220,8 @@ paths:
               storedGame:
                 type: object
                 properties:
+                  creator:
+                    type: string
                   index:
                     type: string
                   game:
@@ -29947,6 +29951,11 @@ paths:
       tags:
         - Query
 definitions:
+  christianvari.checkers.checkers.MsgCreateGameResponse:
+    type: object
+    properties:
+      idValue:
+        type: string
   christianvari.checkers.checkers.NextGame:
     type: object
     properties:
@@ -29964,6 +29973,8 @@ definitions:
         items:
           type: object
           properties:
+            creator:
+              type: string
             index:
               type: string
             game:
@@ -30014,6 +30025,8 @@ definitions:
       storedGame:
         type: object
         properties:
+          creator:
+            type: string
           index:
             type: string
           game:
@@ -30034,6 +30047,8 @@ definitions:
   christianvari.checkers.checkers.StoredGame:
     type: object
     properties:
+      creator:
+        type: string
       index:
         type: string
       game:

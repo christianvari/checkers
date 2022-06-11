@@ -8,6 +8,11 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+func (storedGame *StoredGame) GetCreatorAddress() (red sdk.AccAddress, err error) {
+	creator, errCreator := sdk.AccAddressFromBech32(storedGame.Creator)
+	return creator, sdkerrors.Wrapf(errCreator, ErrInvalidCreator.Error(), storedGame.Creator)
+}
+
 func (storedGame *StoredGame) GetRedAddress() (red sdk.AccAddress, err error) {
 	red, errRed := sdk.AccAddressFromBech32(storedGame.Red)
 	return red, sdkerrors.Wrapf(errRed, ErrInvalidRed.Error(), storedGame.Red)
