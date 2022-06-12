@@ -35,5 +35,17 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	nextGame.IdValue++
 	k.Keeper.SetNextGame(ctx, nextGame)
 
+	// What to emit
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(sdk.EventTypeMessage,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(sdk.AttributeKeyAction, types.StoredGameEventKey),
+			sdk.NewAttribute(types.StoredGameEventCreator, msg.Creator),
+			sdk.NewAttribute(types.StoredGameEventIndex, newIndex),
+			sdk.NewAttribute(types.StoredGameEventRed, msg.Red),
+			sdk.NewAttribute(types.StoredGameEventBlack, msg.Black),
+		),
+	)
+
 	return &types.MsgCreateGameResponse{IdValue: newIndex}, nil
 }

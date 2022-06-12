@@ -60,3 +60,28 @@ func TestCreate1GameHasSaved(t *testing.T) {
 		Black:   carol,
 	}, game1)
 }
+
+func TestCreate1GameEmitted(t *testing.T) {
+	msgSrvr, _, context := setupMsgServerCreateGame(t)
+	msgSrvr.CreateGame(context, &types.MsgCreateGame{
+		Creator: alice,
+		Red:     bob,
+		Black:   carol,
+	})
+	ctx := sdk.UnwrapSDKContext(context)
+	require.NotNil(t, ctx)
+	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
+	require.Len(t, events, 1)
+	event := events[0]
+	require.EqualValues(t, sdk.StringEvent{
+		Type: "message",
+		Attributes: []sdk.Attribute{
+			{Key: "module", Value: "checkers"},
+			{Key: "action", Value: "NewGameCreated"},
+			{Key: "Creator", Value: alice},
+			{Key: "Index", Value: "1"},
+			{Key: "Red", Value: bob},
+			{Key: "Black", Value: carol},
+		},
+	}, event)
+}
