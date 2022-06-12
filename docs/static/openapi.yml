@@ -29956,6 +29956,19 @@ definitions:
     properties:
       idValue:
         type: string
+  christianvari.checkers.checkers.MsgPlayMoveResponse:
+    type: object
+    properties:
+      idValue:
+        type: string
+      capturedX:
+        type: string
+        format: int64
+      capturedY:
+        type: string
+        format: int64
+      winner:
+        type: string
   christianvari.checkers.checkers.NextGame:
     type: object
     properties:
