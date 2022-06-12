@@ -42,7 +42,9 @@ func TestRejectGameByRedOneMoveRemovedGame(t *testing.T) {
 	nextGame, found := keeper.GetNextGame(sdk.UnwrapSDKContext(context))
 	require.True(t, found)
 	require.EqualValues(t, types.NextGame{
-		IdValue: 2,
+		IdValue:  2,
+		FifoHead: "-1",
+		FifoTail: "-1",
 	}, nextGame)
 	_, found = keeper.GetStoredGame(sdk.UnwrapSDKContext(context), "1")
 	require.False(t, found)

@@ -29,6 +29,8 @@ export type CheckersMsgRejectGameResponse = object;
 export interface CheckersNextGame {
   /** @format uint64 */
   idValue?: string;
+  fifoHead?: string;
+  fifoTail?: string;
 }
 
 /**
@@ -77,6 +79,8 @@ export interface CheckersStoredGame {
 
   /** @format uint64 */
   moveCount?: string;
+  beforeId?: string;
+  afterId?: string;
 }
 
 export interface ProtobufAny {
