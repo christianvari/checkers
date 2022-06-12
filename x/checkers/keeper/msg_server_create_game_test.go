@@ -39,19 +39,20 @@ func TestCreateGame(t *testing.T) {
 
 func TestCreate1GameHasSaved(t *testing.T) {
 	msgSrvr, keeper, context := setupMsgServerCreateGame(t)
+	ctx := sdk.UnwrapSDKContext(context)
 	msgSrvr.CreateGame(context, &types.MsgCreateGame{
 		Creator: alice,
 		Red:     bob,
 		Black:   carol,
 	})
-	nextGame, found := keeper.GetNextGame(sdk.UnwrapSDKContext(context))
+	nextGame, found := keeper.GetNextGame(ctx)
 	require.True(t, found)
 	require.EqualValues(t, types.NextGame{
 		IdValue:  2,
 		FifoHead: "1",
 		FifoTail: "1",
 	}, nextGame)
-	game1, found1 := keeper.GetStoredGame(sdk.UnwrapSDKContext(context), "1")
+	game1, found1 := keeper.GetStoredGame(ctx, "1")
 	require.True(t, found1)
 	require.EqualValues(t, types.StoredGame{
 		Creator:  alice,
@@ -62,6 +63,7 @@ func TestCreate1GameHasSaved(t *testing.T) {
 		Black:    carol,
 		BeforeId: "-1",
 		AfterId:  "-1",
+		Deadline: types.FormatDeadline(ctx.BlockTime().Add(types.MaxTurnDuration)),
 	}, game1)
 }
 

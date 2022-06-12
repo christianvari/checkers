@@ -22,4 +22,5 @@ var (
 	ErrWrongMove          = sdkerrors.Register(ModuleName, 1108, "wrong move")
 	ErrRedAlreadyPlayed   = sdkerrors.Register(ModuleName, 1109, "red player has already played")
 	ErrBlackAlreadyPlayed = sdkerrors.Register(ModuleName, 1110, "black player has already played")
+	ErrInvalidDeadline    = sdkerrors.Register(ModuleName, 1111, "deadline cannot be parsed: %s")
 )

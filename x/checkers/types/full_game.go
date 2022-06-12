@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/christianvari/checkers/x/checkers/rules"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -33,4 +34,34 @@ func (storedGame *StoredGame) ParseGame() (game *rules.Game, err error) {
 		return nil, sdkerrors.Wrapf((fmt.Errorf("turn: %s", storedGame.Turn)), ErrGameNotParseable.Error())
 	}
 	return game, nil
+}
+
+func (storedGame StoredGame) Validate() (err error) {
+	_, err = storedGame.GetCreatorAddress()
+	if err != nil {
+		return err
+	}
+	_, err = storedGame.ParseGame()
+	if err != nil {
+		return err
+	}
+	_, err = storedGame.GetRedAddress()
+	if err != nil {
+		return err
+	}
+	_, err = storedGame.GetBlackAddress()
+	return err
+}
+
+func (storedGame *StoredGame) GetDeadlineAsTime() (deadline time.Time, err error) {
+	deadline, errDeadline := time.Parse(DeadlineLayout, storedGame.Deadline)
+	return deadline, sdkerrors.Wrapf(errDeadline, ErrInvalidDeadline.Error(), storedGame.Deadline)
+}
+
+func FormatDeadline(deadline time.Time) string {
+	return deadline.UTC().Format(DeadlineLayout)
+}
+
+func GetNextDeadline(ctx sdk.Context) time.Time {
+	return ctx.BlockTime().Add(MaxTurnDuration)
 }
