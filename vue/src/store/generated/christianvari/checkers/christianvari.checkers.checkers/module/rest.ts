@@ -24,6 +24,8 @@ export interface CheckersMsgPlayMoveResponse {
   winner?: string;
 }
 
+export type CheckersMsgRejectGameResponse = object;
+
 export interface CheckersNextGame {
   /** @format uint64 */
   idValue?: string;
@@ -72,6 +74,9 @@ export interface CheckersStoredGame {
   turn?: string;
   red?: string;
   black?: string;
+
+  /** @format uint64 */
+  moveCount?: string;
 }
 
 export interface ProtobufAny {
