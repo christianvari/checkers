@@ -33,7 +33,9 @@ func (k *Keeper) CollectWager(ctx sdk.Context, storedGame *types.StoredGame) err
 	}
 	return nil
 }
+
 func (k *Keeper) MustPayWinnings(ctx sdk.Context, storedGame *types.StoredGame) {
+	// Pay the winnings to the winner
 	winnerAddress, found, err := storedGame.GetWinnerAddress()
 	if err != nil {
 		panic(err.Error())
@@ -41,19 +43,18 @@ func (k *Keeper) MustPayWinnings(ctx sdk.Context, storedGame *types.StoredGame) 
 	if !found {
 		panic(fmt.Sprintf(types.ErrCannotFindWinnerByColor.Error(), storedGame.Winner))
 	}
-
 	winnings := storedGame.GetWagerCoin()
 	if storedGame.MoveCount == 0 {
 		panic(types.ErrNothingToPay.Error())
 	} else if 1 < storedGame.MoveCount {
 		winnings = winnings.Add(winnings)
 	}
-
 	err = k.bank.SendCoinsFromModuleToAccount(ctx, types.ModuleName, winnerAddress, sdk.NewCoins(winnings))
 	if err != nil {
 		panic(types.ErrCannotPayWinnings.Error())
 	}
 }
+
 func (k *Keeper) MustRefundWager(ctx sdk.Context, storedGame *types.StoredGame) {
 	if storedGame.MoveCount == 1 {
 		black, err := storedGame.GetBlackAddress()

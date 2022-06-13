@@ -71,17 +71,14 @@ func (storedGame *StoredGame) GetPlayerAddress(color string) (address sdk.AccAdd
 	if err != nil {
 		return nil, false, err
 	}
-
 	black, err := storedGame.GetBlackAddress()
 	if err != nil {
 		return nil, false, err
 	}
-
 	address, found = map[string]sdk.AccAddress{
-		rules.RED_PLAYER.Color:   red,
-		rules.BLACK_PLAYER.Color: black,
+		rules.PieceStrings[rules.RED_PLAYER]:   red,
+		rules.PieceStrings[rules.BLACK_PLAYER]: black,
 	}[color]
-
 	return address, found, nil
 }
 

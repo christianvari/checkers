@@ -109,12 +109,12 @@ func (suite *IntegrationTestSuite) TestPlayMoveUpToWinner() {
 		BeforeId:  "-1",
 		AfterId:   "-1",
 		Deadline:  types.FormatDeadline(suite.ctx.BlockTime().Add(types.MaxTurnDuration)),
-		Winner:    "BLACK",
+		Winner:    "b",
 		Wager:     11,
 	}, game1)
 	events := sdk.StringifyEvents(suite.ctx.EventManager().ABCIEvents())
 
-	winEvent := events[0]
+	winEvent := events[2]
 	suite.Require().Equal(winEvent.Type, "message")
 	winWttributesDiscardCount := createEventCount + 2*playEventCountFirst + 37*playEventCountNext
 	suite.Require().EqualValues([]sdk.Attribute{
@@ -128,7 +128,7 @@ func (suite *IntegrationTestSuite) TestPlayMoveUpToWinner() {
 		{Key: "Winner", Value: "b"},
 	}, winEvent.Attributes[winWttributesDiscardCount:])
 
-	transferEvent := events[1]
+	transferEvent := events[3]
 	suite.Require().Equal(transferEvent.Type, "transfer")
 	transferAttributesDiscardCount := 2 * transferEventCount
 	suite.Require().EqualValues([]sdk.Attribute{

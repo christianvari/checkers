@@ -17,7 +17,7 @@ func CmdCreateGame() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-game [red] [black] [wager]",
 		Short: "Broadcast message createGame",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argRed := args[0]
 			argBlack := args[1]

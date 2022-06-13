@@ -32,6 +32,6 @@ func (suite *IntegrationTestSuite) TestPlayMove() {
 		IdValue:   "1",
 		CapturedX: -1,
 		CapturedY: -1,
-		Winner:    "NO_PLAYER",
+		Winner:    "*",
 	}, *playMoveResponse)
 }
