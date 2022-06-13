@@ -23,6 +23,11 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 		return nil, types.ErrGameFinished
 	}
 
+	err := k.Keeper.CollectWager(ctx, &storedGame)
+	if err != nil {
+		return nil, err
+	}
+
 	isRed := strings.Compare(storedGame.Red, msg.Creator) == 0
 	isBlack := strings.Compare(storedGame.Black, msg.Creator) == 0
 
@@ -68,8 +73,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 
 	storedGame.MoveCount++
 	storedGame.Deadline = types.FormatDeadline(types.GetNextDeadline(ctx))
-	winner := game.Winner()
-	storedGame.Winner = rules.PieceStrings[winner]
+	storedGame.Winner = rules.PieceStrings[game.Winner()]
 	storedGame.Game = game.String()
 	storedGame.Turn = rules.PieceStrings[game.Turn]
 
@@ -77,6 +81,7 @@ func (k msgServer) PlayMove(goCtx context.Context, msg *types.MsgPlayMove) (*typ
 		k.Keeper.SendToFifoTail(ctx, &storedGame, &nextGame)
 	} else {
 		k.Keeper.RemoveFromFifo(ctx, &storedGame, &nextGame)
+		k.Keeper.MustPayWinnings(ctx, &storedGame)
 	}
 
 	k.Keeper.SetStoredGame(ctx, storedGame)
