@@ -65,3 +65,10 @@ const (
 const (
 	StoredGameEventWager = "Wager"
 )
+
+// Gas metering
+const (
+	CreateGameGas = 10
+	PlayMoveGas   = 10
+	RejectGameGas = 0
+)
