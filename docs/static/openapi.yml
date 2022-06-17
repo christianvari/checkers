@@ -184,6 +184,8 @@ paths:
                     wager:
                       type: string
                       format: uint64
+                    token:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -327,6 +329,8 @@ paths:
                   wager:
                     type: string
                     format: uint64
+                  token:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -30113,6 +30117,8 @@ definitions:
             wager:
               type: string
               format: uint64
+            token:
+              type: string
       pagination:
         type: object
         properties:
@@ -30190,6 +30196,8 @@ definitions:
           wager:
             type: string
             format: uint64
+          token:
+            type: string
   christianvari.checkers.checkers.QueryParamsResponse:
     type: object
     properties:
@@ -30226,6 +30234,8 @@ definitions:
       wager:
         type: string
         format: uint64
+      token:
+        type: string
   cosmos.base.query.v1beta1.PageRequest:
     type: object
     properties:

@@ -13,6 +13,7 @@ func (suite *IntegrationTestSuite) TestCreateGame() {
 		Red:     bob,
 		Black:   carol,
 		Wager:   12,
+		Token:   sdk.DefaultBondDenom,
 	})
 	suite.Require().Nil(err)
 	suite.Require().EqualValues(types.MsgCreateGameResponse{
@@ -32,6 +33,7 @@ func (suite *IntegrationTestSuite) TestCreateGameDidNotPay() {
 		Red:     bob,
 		Black:   carol,
 		Wager:   12,
+		Token:   sdk.DefaultBondDenom,
 	})
 	suite.RequireBankBalance(balAlice, alice)
 	suite.RequireBankBalance(balBob, bob)
@@ -48,7 +50,8 @@ func (suite *IntegrationTestSuite) TestCreate1GameConsumedGas() {
 		Red:     bob,
 		Black:   carol,
 		Wager:   15,
+		Token:   sdk.DefaultBondDenom,
 	})
 	gasAfter := suite.ctx.GasMeter().GasConsumed()
-	suite.Require().Equal(uint64(13_190+10), gasAfter-gasBefore)
+	suite.Require().Equal(uint64(0x38ac), gasAfter-gasBefore)
 }
